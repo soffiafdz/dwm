@@ -14,8 +14,8 @@ static int topbar             = 1;   /* 0 means bottom bar */
 static int focusonwheel       = 1;
 static int user_bh            = 0;   /* 0 means that dwm will calculate bar height, >= 1 means dwm will user_bh as bar height */
 
-static char font[]                      = "monospace:size=10";
-static const char *fonts[]              = { font, "JoyPixels:pixelsize=10:antialias=true:autohint=true" };
+static char font[]                      = "monospace:size=12";
+static const char *fonts[]              = { font, "JoyPixels:pixelsize=13:antialias=true:autohint=true" };
 static char normbgcolor[]               = "#222222";
 static char normbordercolor[]           = "#444444";
 static char normfgcolor[]               = "#bbbbbb";
@@ -44,6 +44,7 @@ static const char *const autostart[]    = {
 	"unclutter", NULL,
 	"redshift", NULL,
 	"setxkbmap", "-option", "compose:ralt", NULL,
+	"dwmbar", NULL,
 	NULL
 };
 
@@ -203,7 +204,8 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_p,            spawn,          SHCMD("fullscreenshot") },
 
 	{ MODKEY,                       XK_a,            spawn,          SHCMD("$TERMINAL -e pulsemixer") },
-/* 	{ MODKEY|ShiftMask,             XK_a,            spawn,          SHCMD("") }, */
+/*  For Tango; Broken Keyboard */
+/* 	{ MODKEY|ShiftMask,             XK_a,            spawn,          SHCMD("kill_keyboard") }, */
 	{ MODKEY,                       XK_s,            togglegaps,     {0} },
 	{ MODKEY|ShiftMask,             XK_s,            defaultgaps,    {0} },
 	{ MODKEY,                       XK_d,            spawn,          {.v = dmenucmd } },
@@ -220,8 +222,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_semicolon,    shiftview,      { .i = -1 } },
 	{ MODKEY|ShiftMask,             XK_semicolon,    shifttag,       { .i = -1 } },
 	{ MODKEY,                       XK_apostrophe,   setcfact,       {.f = 0.00} },
-/*  For Tango; Broken Keyboard */
-/* 	{ MODKEY|ShiftMask,             XK_apostrophe,   spawn,          SHCMD("kill_keyboard") }, */
+	{ MODKEY|ShiftMask,             XK_apostrophe,   spawn,          SHCMD("refbar") },
 
 	{ MODKEY,                       XK_z,            incrigaps,      {.i = +2 } },
 	{ MODKEY|ShiftMask,             XK_z,            incrgaps,       {.i = +2 } },
