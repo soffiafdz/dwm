@@ -164,12 +164,12 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,                            8)
 	{ MODKEY,                       XK_0,            view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,            tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_minus,        spawn,          SHCMD("pamixer --allow-boost -d 5") },
-	{ MODKEY|ShiftMask,             XK_minus,        spawn,          SHCMD("pamixer --allow-boost -d 15") },
-	{ MODKEY,                       XK_plus,         spawn,          SHCMD("pamixer --allow-boost -i 5") },
-	{ MODKEY|ShiftMask,             XK_plus,         spawn,          SHCMD("pamixer --allow-boost -i 15") },
-	{ MODKEY,                       XK_equal,        spawn,          SHCMD("pamixer --mute") },
-	{ MODKEY|ShiftMask,             XK_equal,        spawn,          SHCMD("pamixer --unmute") },
+	{ MODKEY,                       XK_minus,        spawn,          SHCMD("pamixer --allow-boost -d 5; refbar") },
+	{ MODKEY|ShiftMask,             XK_minus,        spawn,          SHCMD("pamixer --allow-boost -d 15; refbar") },
+	{ MODKEY,                       XK_plus,         spawn,          SHCMD("pamixer --allow-boost -i 5; refbar") },
+	{ MODKEY|ShiftMask,             XK_plus,         spawn,          SHCMD("pamixer --allow-boost -i 15; refbar") },
+	{ MODKEY,                       XK_equal,        spawn,          SHCMD("pamixer --mute; refbar") },
+	{ MODKEY|ShiftMask,             XK_equal,        spawn,          SHCMD("pamixer --unmute; refbar") },
 
 	{ MODKEY,                       XK_Return,       spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,             XK_Return,       spawn,          SHCMD("$TERMINAL -e tmux") },
@@ -190,14 +190,14 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_e,            spawn,          SHCMD("$TERMINAL -e nvim -c VimwikiIndex") },
 	{ MODKEY,                       XK_r,            spawn,          SHCMD("$TERMINAL -e lf") },
 	{ MODKEY|ShiftMask,             XK_r,            spawn,          SHCMD("$TERMINAL -e bpytop") },
-	{ MODKEY,                       XK_t,            spawn,          {.v = &layouts[0]} }, /* Tile */
-	{ MODKEY|ShiftMask,             XK_t,            spawn,          {.v = &layouts[1]} }, /* Bstack */
-	{ MODKEY,                       XK_y,            spawn,          {.v = &layouts[2]} }, /* Grid */
-	{ MODKEY|ShiftMask,             XK_y,            spawn,          {.v = &layouts[3]} }, /* Nrowgrid */
-	{ MODKEY,                       XK_u,            spawn,          {.v = &layouts[4]} }, /* Deck */
-	{ MODKEY|ShiftMask,             XK_u,            spawn,          {.v = &layouts[5]} }, /* Monocle */
-	{ MODKEY,                       XK_i,            spawn,          {.v = &layouts[6]} }, /* CenteredMaster */
-	{ MODKEY|ShiftMask,             XK_i,            spawn,          {.v = &layouts[7]} }, /* CFloatingMaster */
+	{ MODKEY,                       XK_t,            setlayout,      {.v = &layouts[0]} }, /* Tile */
+	{ MODKEY|ShiftMask,             XK_t,            setlayout,      {.v = &layouts[1]} }, /* Bstack */
+	{ MODKEY,                       XK_y,            setlayout,      {.v = &layouts[2]} }, /* Grid */
+	{ MODKEY|ShiftMask,             XK_y,            setlayout,      {.v = &layouts[3]} }, /* Nrowgrid */
+	{ MODKEY,                       XK_u,            setlayout,      {.v = &layouts[4]} }, /* Deck */
+	{ MODKEY|ShiftMask,             XK_u,            setlayout,      {.v = &layouts[5]} }, /* Monocle */
+	{ MODKEY,                       XK_i,            setlayout,      {.v = &layouts[6]} }, /* CenteredMaster */
+	{ MODKEY|ShiftMask,             XK_i,            setlayout,      {.v = &layouts[7]} }, /* CFloatingMaster */
 	{ MODKEY,                       XK_o,            incnmaster,     {.i = +1} },
 	{ MODKEY|ShiftMask,             XK_o,            incnmaster,     {.i = -1} },
 	{ MODKEY,                       XK_p,            spawn,          SHCMD("flameshot gui") },
@@ -243,9 +243,9 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period,       focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_period,       tagmon,         {.i = +1 } },
 
-	{ 0, XF86XK_AudioMute,          spawn,  SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)") },
-	{ 0, XF86XK_AudioRaiseVolume,   spawn,  SHCMD("pamixer --allow-boost -i 3; kill -44 $(pidof dwmblocks)") },
-	{ 0, XF86XK_AudioLowerVolume,   spawn,  SHCMD("pamixer --allow-boost -d 3; kill -44 $(pidof dwmblocks)") },
+	{ 0, XF86XK_AudioMute,          spawn,  SHCMD("pamixer -t; refbar") },
+	{ 0, XF86XK_AudioRaiseVolume,   spawn,  SHCMD("pamixer --allow-boost -i 3; refbar") },
+	{ 0, XF86XK_AudioLowerVolume,   spawn,  SHCMD("pamixer --allow-boost -d 3; refbar") },
 	{ 0, XF86XK_AudioPrev,          spawn,  SHCMD("playerctl previous") },
 	{ 0, XF86XK_AudioNext,          spawn,  SHCMD("playerctl next") },
 	{ 0, XF86XK_AudioPause,         spawn,  SHCMD("playerctl pause") },
