@@ -148,7 +148,7 @@ ResourcePref resources[] = {
 };
 
 #include "shiftview.c"
-
+#include <X11/XF86keysym.h>
 static Key keys[] = {
 	/* modifier                     key              function        argument */
 	STACKKEYS(MODKEY,                                focus)
@@ -179,8 +179,8 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_BackSpace,    quit,           {0} },
 	{ MODKEY,                       XK_Tab,          view,           {0} },
 	{ MODKEY|ShiftMask,             XK_Tab,          view,           {0} },
-	{ MODKEY,                       XK_Space,        zoom,           {0} },
-	{ MODKEY|ShiftMask,             XK_Space,        togglefloating, {0} },
+	{ MODKEY,                       XK_space,        zoom,           {0} },
+	{ MODKEY|ShiftMask,             XK_space,        togglefloating, {0} },
 
 	{ MODKEY,                       XK_q,            killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_q,            spawn,          SHCMD("kill -9 $(xdotool getwindowfocus getwindowpid)") },
