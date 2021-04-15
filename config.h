@@ -1,7 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static unsigned int borderpx  = 3;   /* border pixel of windows */
+static unsigned int borderpx  = 2;   /* border pixel of windows */
 static unsigned int snap      = 32;  /* snap pixel */
 static int swallowfloating    = 0;   /* 1 means swallow floating windows by default */
 static unsigned int gappih    = 20;  /* horiz inner gap between windows */
@@ -14,14 +14,14 @@ static int topbar             = 1;   /* 0 means bottom bar */
 static int focusonwheel       = 1;
 static int user_bh            = 0;   /* 0 means that dwm will calculate bar height, >= 1 means dwm will user_bh as bar height */
 
-static char font[]                      = "monospace:size=12";
+static char font[]                      = "FiraCode Nerd Font:style=Retina,Regular:size=14:antialias=true";
 static const char *fonts[]              = { font, "JoyPixels:pixelsize=13:antialias=true:autohint=true" };
 static char normbgcolor[]               = "#222222";
 static char normbordercolor[]           = "#444444";
 static char normfgcolor[]               = "#bbbbbb";
 static char selfgcolor[]                = "#eeeeee";
-static char selbordercolor[]            = "#005577";
-static char selbgcolor[]                = "#005577";
+static char selbordercolor[]            = "#420000";
+static char selbgcolor[]                = "#420000";
 static const unsigned int baralpha      = 0xd0;
 static const unsigned int borderalpha   = OPAQUE;
 static char *colors[][3]                = {
@@ -37,13 +37,10 @@ static const unsigned int alphas[][3]   = {
 
 static const char *const autostart[]    = {
 	"setwp", NULL,
-	"xrdb", "/home/soffiafdz/.config/x11/xresources", NULL,
 	"xcompmgr", NULL,
 	"dunst", NULL,
-	"xset", "r" "rate" "300", "50", NULL,
 	"unclutter", NULL,
 	"redshift", NULL,
-	"setxkbmap", "-option", "compose:ralt", NULL,
 	"dwmbar", NULL,
 	NULL
 };
@@ -131,20 +128,20 @@ ResourcePref resources[] = {
 		{ "color0",             STRING,      &selfgcolor },
 		{ "color0",             STRING,      &normbordercolor },
 		{ "color3",             STRING,      &selbordercolor },
-		{ "borderpx",           INTEGER,     &borderpx },
-		{ "snap",               INTEGER,     &snap },
-		{ "showbar",            INTEGER,     &showbar },
-		{ "topbar",             INTEGER,     &topbar },
-		{ "focusonwheel",       INTEGER,     &focusonwheel  },
-		{ "user_bh",            INTEGER,     &user_bh  },
-		{ "nmaster",            INTEGER,     &nmaster },
-		{ "resizehints",        INTEGER,     &resizehints },
-		{ "mfact",              FLOAT,       &mfact },
-		{ "gappih",             INTEGER,     &gappih },
-		{ "gappiv",             INTEGER,     &gappiv },
-		{ "gappoh",             INTEGER,     &gappoh },
-		{ "gappov",             INTEGER,     &gappov },
-		{ "smartgaps",          INTEGER,     &smartgaps },
+/* 		{ "borderpx",           INTEGER,     &borderpx },         */
+/* 		{ "snap",               INTEGER,     &snap },             */
+/* 		{ "showbar",            INTEGER,     &showbar },          */
+/* 		{ "topbar",             INTEGER,     &topbar },           */
+/* 		{ "focusonwheel",       INTEGER,     &focusonwheel  },    */
+/* 		{ "user_bh",            INTEGER,     &user_bh  },         */
+/* 		{ "nmaster",            INTEGER,     &nmaster },          */
+/* 		{ "resizehints",        INTEGER,     &resizehints },      */
+/* 		{ "mfact",              FLOAT,       &mfact },            */
+/* 		{ "gappih",             INTEGER,     &gappih },           */
+/* 		{ "gappiv",             INTEGER,     &gappiv },           */
+/* 		{ "gappoh",             INTEGER,     &gappoh },           */
+/* 		{ "gappov",             INTEGER,     &gappov },           */
+/* 		{ "smartgaps",          INTEGER,     &smartgaps },        */
 };
 
 #include "shiftview.c"
@@ -165,9 +162,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_0,            view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,            tag,            {.ui = ~0 } },
 	{ MODKEY,                       XK_minus,        spawn,          SHCMD("pamixer --allow-boost -d 5; refbar") },
-	{ MODKEY|ShiftMask,             XK_minus,        spawn,          SHCMD("pamixer --allow-boost -d 15; refbar") },
-	{ MODKEY,                       XK_plus,         spawn,          SHCMD("pamixer --allow-boost -i 5; refbar") },
-	{ MODKEY|ShiftMask,             XK_plus,         spawn,          SHCMD("pamixer --allow-boost -i 15; refbar") },
+	{ MODKEY|ShiftMask,             XK_minus,        spawn,          SHCMD("pamixer --allow-boost -i 5; refbar") },
 	{ MODKEY,                       XK_equal,        spawn,          SHCMD("pamixer --mute; refbar") },
 	{ MODKEY|ShiftMask,             XK_equal,        spawn,          SHCMD("pamixer --unmute; refbar") },
 
