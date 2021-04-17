@@ -4,7 +4,7 @@
 static unsigned int borderpx  = 2;   /* border pixel of windows */
 static unsigned int snap      = 32;  /* snap pixel */
 static int swallowfloating    = 0;   /* 1 means swallow floating windows by default */
-static unsigned int gappih    = 20;  /* horiz inner gap between windows */
+static unsigned int gappih    = 25;  /* horiz inner gap between windows */
 static unsigned int gappiv    = 10;  /* vert inner gap between windows */
 static unsigned int gappoh    = 10;  /* horiz outer gap between windows and screen edge */
 static unsigned int gappov    = 20;  /* vert outer gap between windows and screen edge */
@@ -46,8 +46,8 @@ static const char *const autostart[]    = {
 };
 
 /* tagging */
-static const char *tags[]    = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-static const char *tagsalt[] = { "X", "X", "X", "X", "X", "X", "X", "X", "X" };
+static const char *tags[] = { "", "", "ﬧ", "﫦" "", "", "ﳲ", "", "爵" };
+static const char *tagsalt[]    = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -56,8 +56,20 @@ static const Rule rules[] = {
 	 */
 	/* class           instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
 	{ "Gimp",          NULL,     NULL,           0,         1,          0,           0,        -1 },
-	{ "Brave-browser", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
 	{ "St",            NULL,     NULL,           0,         0,          1,           0,        -1 },
+	{ "St",            NULL,     "tmux",         1 << 1,    0,          1,           0,        -1 },
+	{ "Rstudio",       NULL,     NULL,           1 << 2,    0,          0,          -1,        -1 },
+	{ "Zotero",        NULL,     NULL,           1 << 3,    0,          0,          -1,        -1 },
+	{ NULL,   "libreoffice",     NULL,           1 << 3,    0,          0,          -1,        -1 },
+	{ "St",            NULL,     "lf",           1 << 4,    0,          1,           0,        -1 },
+	{ "zoom",          NULL,     NULL,           1 << 5,    0,          0,          -1,        -1 },
+	{ "Microsoft Teams - Preview",NULL,NULL,     1 << 5,    0,          0,          -1,        -1 },
+	{ "TelegramDesktop",NULL,    NULL,           1 << 5,    0,          0,          -1,        -1 },
+	{ "Signal",        NULL,     NULL,           1 << 5,    0,          0,          -1,        -1 },
+	{ "mpv",           NULL,     NULL,           1 << 6,    0,          0,          -1,        -1 },
+	{ "Spotify",       NULL,     NULL,           1 << 7,    0,          0,          -1,        -1 },
+	{ "Brave-browser", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
+	{ "firefox",       NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
 	{ NULL,            NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
 };
 
@@ -77,8 +89,8 @@ static const Layout layouts[] = {
 	{ "HHH",      grid },
 	{ "###",      nrowgrid },
 
-	{ "H[]",      deck },
 	{ "[M]",      monocle },
+	{ "H[]",      deck },
 
 	{ "|M|",      centeredmaster },
 	{ ">M>",      centeredfloatingmaster },
@@ -189,8 +201,8 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_t,            setlayout,      {.v = &layouts[1]} }, /* Bstack */
 	{ MODKEY,                       XK_y,            setlayout,      {.v = &layouts[2]} }, /* Grid */
 	{ MODKEY|ShiftMask,             XK_y,            setlayout,      {.v = &layouts[3]} }, /* Nrowgrid */
-	{ MODKEY,                       XK_u,            setlayout,      {.v = &layouts[4]} }, /* Deck */
-	{ MODKEY|ShiftMask,             XK_u,            setlayout,      {.v = &layouts[5]} }, /* Monocle */
+	{ MODKEY,                       XK_u,            setlayout,      {.v = &layouts[4]} }, /* Monocle */
+	{ MODKEY|ShiftMask,             XK_u,            setlayout,      {.v = &layouts[5]} }, /* Deck */
 	{ MODKEY,                       XK_i,            setlayout,      {.v = &layouts[6]} }, /* CenteredMaster */
 	{ MODKEY|ShiftMask,             XK_i,            setlayout,      {.v = &layouts[7]} }, /* CFloatingMaster */
 	{ MODKEY,                       XK_o,            incnmaster,     {.i = +1} },
@@ -199,6 +211,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_p,            spawn,          SHCMD("fullscreenshot") },
 
 	{ MODKEY,                       XK_a,            spawn,          SHCMD("$TERMINAL -e pulsemixer") },
+	{ MODKEY|ShiftMask,             XK_a,            spawn,          SHCMD("spotify") },
 /*  For Tango; Broken Keyboard */
 /* 	{ MODKEY|ShiftMask,             XK_a,            spawn,          SHCMD("kill_keyboard") }, */
 	{ MODKEY,                       XK_s,            togglegaps,     {0} },
