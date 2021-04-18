@@ -67,7 +67,8 @@ static const Rule rules[] = {
 	{ "TelegramDesktop",NULL,    NULL,           1 << 5,    0,          0,          -1,        -1 },
 	{ "Signal",        NULL,     NULL,           1 << 5,    0,          0,          -1,        -1 },
 	{ "mpv",           NULL,     NULL,           1 << 6,    0,          0,          -1,        -1 },
-	{ "Spotify",       NULL,     NULL,           1 << 7,    0,          0,          -1,        -1 },
+/* For some reason this doesn't work */
+/* 	{ NULL,            NULL,     "Spotify Free", 1 << 7,    0,          0,          -1,        -1 }, */
 	{ "Brave-browser", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
 	{ "firefox",       NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
 	{ NULL,            NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
