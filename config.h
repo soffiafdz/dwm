@@ -181,10 +181,10 @@ static Key keys[] = {
 
 	{ MODKEY,                       XK_Return,       spawn,          {.v = termcmd } },
 	{ MODKEY|ShiftMask,             XK_Return,       spawn,          SHCMD("$TERMINAL -e tmux") },
-	{ MODKEY,                       XK_Escape,       spawn,          SHCMD("sudo -A zzz") },
+/* 	{ MODKEY,                       XK_Escape,       spawn,          SHCMD("sudo -A zzz") }, */
 	{ MODKEY|ShiftMask,             XK_Escape,       spawn,          SHCMD("prompt 'ShutDown?' 'sudo shutdown -h now'") },
 	{ MODKEY,                       XK_BackSpace,    spawn,          SHCMD("sysaction") },
-	{ MODKEY|ShiftMask,             XK_BackSpace,    quit,           {0} },
+	{ MODKEY|ShiftMask,             XK_BackSpace,    quit,           SHCMD("sysaction") },
 	{ MODKEY,                       XK_Tab,          view,           {0} },
 	{ MODKEY|ShiftMask,             XK_Tab,          view,           {0} },
 	{ MODKEY,                       XK_space,        zoom,           {0} },
