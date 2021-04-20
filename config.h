@@ -228,8 +228,8 @@ static Key keys[] = {
                                 /* J & K: STACKKEYS */
 	{ MODKEY,                       XK_l,            setmfact,       {.f = +0.05} },
 	{ MODKEY|ShiftMask,             XK_l,            setcfact,       {.f = -0.25} },
-	{ MODKEY,                       XK_semicolon,    shiftview,      { .i = -1 } },
-	{ MODKEY|ShiftMask,             XK_semicolon,    shifttag,       { .i = -1 } },
+	{ MODKEY,                       XK_semicolon,    shiftview,      { .i = 1 } },
+	{ MODKEY|ShiftMask,             XK_semicolon,    shifttag,       { .i = 1 } },
 	{ MODKEY,                       XK_apostrophe,   setcfact,       {.f = 0.00} },
 	{ MODKEY|ShiftMask,             XK_apostrophe,   spawn,          SHCMD("refbar") },
 
