@@ -59,6 +59,7 @@ static const Rule rules[] = {
 	{ "St",            NULL,     NULL,           0,         0,          1,           0,        -1 },
 	{ "St",            NULL,     "tmux",         1 << 1,    0,          1,           0,        -1 },
 	{ "RStudio",       NULL,     NULL,           1 << 2,    0,          0,          -1,        -1 },
+	{ NULL,            NULL,     "Register",     1 << 2,    1,          0,          -1,        -1 },
 	{ "Zotero",        NULL,     NULL,           1 << 3,    0,          0,          -1,        -1 },
 	{ NULL,   "libreoffice",     NULL,           1 << 3,    0,          0,          -1,        -1 },
 	{ "St",            NULL,     "lf",           1 << 4,    0,          1,           0,        -1 },
