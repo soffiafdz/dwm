@@ -197,7 +197,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_w,            spawn,          SHCMD("$TERMINAL -e sudo nmtui") },
 	{ MODKEY,                       XK_e,            spawn,          SHCMD("$TERMINAL -e nvim") },
 	{ MODKEY|ShiftMask,             XK_e,            spawn,          SHCMD("$TERMINAL -e nvim -c VimwikiIndex") },
-	{ MODKEY,                       XK_r,            spawn,          SHCMD("$TERMINAL -e lf") },
+	{ MODKEY,                       XK_r,            spawn,          SHCMD("$TERMINAL -e lfrun") },
 	{ MODKEY|ShiftMask,             XK_r,            spawn,          SHCMD("$TERMINAL -e bpytop") },
 	{ MODKEY,                       XK_t,            setlayout,      {.v = &layouts[0]} }, /* Tile */
 	{ MODKEY|ShiftMask,             XK_t,            setlayout,      {.v = &layouts[1]} }, /* Bstack */
