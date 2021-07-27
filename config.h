@@ -67,6 +67,7 @@ static const Rule rules[] = {
 	{ "Microsoft Teams - Preview",NULL,NULL,     1 << 5,    0,          0,          -1,        -1 },
 	{ "TelegramDesktop",NULL,    NULL,           1 << 5,    0,          0,          -1,        -1 },
 	{ "Signal",        NULL,     NULL,           1 << 5,    0,          0,          -1,        -1 },
+	{ "discord",       NULL,     "Discord",      1 << 5,    0,          0,          -1,        -1 },
 	{ "mpv",           NULL,     NULL,           1 << 6,    0,          0,          -1,        -1 },
 /* For some reason this doesn't work */
 /* 	{ NULL,            NULL,     "Spotify Free", 1 << 7,    0,          0,          -1,        -1 }, */
