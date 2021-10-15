@@ -46,7 +46,7 @@ static const char *const autostart[]    = {
 };
 
 /* tagging */
-static const char *tags[] = { "", "", "ﬧ", "﫦", "", "", "ﳲ", "", "爵" };
+static const char *tags[] = { "", "", "ﬧ", "﫦", "", "", "ﳲ", "", "爵" };
 static const char *tagsalt[]    = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
@@ -55,24 +55,25 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class           instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
-	{ "Gimp",          NULL,     NULL,           0,         1,          0,           0,        -1 },
 	{ "St",            NULL,     NULL,           0,         0,          1,           0,        -1 },
-	{ "St",            NULL,     "tmux",         1 << 1,    0,          1,           0,        -1 },
-	{ "RStudio",       NULL,     NULL,           1 << 2,    0,          0,          -1,        -1 },
-	{ NULL,            NULL,     "Register",     1 << 2,    1,          0,          -1,        -1 },
-	{ "Zotero",        NULL,     NULL,           1 << 3,    0,          0,          -1,        -1 },
-	{ NULL,   "libreoffice",     NULL,           1 << 3,    0,          0,          -1,        -1 },
-	{ "St",            NULL,     "lf",           1 << 4,    0,          1,           0,        -1 },
-	{ "zoom",          NULL,     NULL,           1 << 5,    0,          0,          -1,        -1 },
-	{ "Microsoft Teams - Preview",NULL,NULL,     1 << 5,    0,          0,          -1,        -1 },
-	{ "TelegramDesktop",NULL,    NULL,           1 << 5,    0,          0,          -1,        -1 },
-	{ "Signal",        NULL,     NULL,           1 << 5,    0,          0,          -1,        -1 },
-	{ "discord",       NULL,     "Discord",      1 << 5,    0,          0,          -1,        -1 },
-	{ "mpv",           NULL,     NULL,           1 << 6,    0,          0,          -1,        -1 },
-/* For some reason this doesn't work */
-/* 	{ NULL,            NULL,     "Spotify Free", 1 << 7,    0,          0,          -1,        -1 }, */
-	{ "Brave-browser", NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
-	{ "firefox",       NULL,     NULL,           1 << 8,    0,          0,          -1,        -1 },
+	{ "St",            NULL,     "tmux",         1,         0,          1,           0,        -1 },
+	{ "St",            NULL,     "lf",           1 << 1,    0,          1,           0,        -1 },
+	{ "RStudio",       NULL,     NULL,           1 << 2,    0,          0,           0,        -1 },
+	{ NULL,            NULL,     "Register",     1 << 2,    1,          0,           0,        -1 },
+	{ "Zotero",        NULL,     NULL,           1 << 3,    0,          0,           0,        -1 },
+	{ NULL,   "libreoffice",     NULL,           1 << 3,    0,          0,           0,        -1 },
+	{ "zoom",          NULL,     NULL,           1 << 4,    0,          0,           0,        -1 },
+	{ "Microsoft Teams - Preview",NULL,NULL,     1 << 4,    0,          0,           0,        -1 },
+	{ "Slack",         NULL,     NULL,           1 << 4,    0,          0,           0,        -1 },
+	{ "TelegramDesktop",NULL,    NULL,           1 << 4,    0,          0,           0,        -1 },
+	{ "Signal",        NULL,     NULL,           1 << 4,    0,          0,           0,        -1 },
+	{ "discord",       NULL,     "Discord",      1 << 4,    0,          0,           0,        -1 },
+	{ "Gimp",          NULL,     NULL,           1 << 5,    1,          0,           0,        -1 },
+	{ "Rawtherapee",   NULL,     NULL,           1 << 5,    0,          0,           0,        -1 },
+	{ "Darktable",     NULL,     NULL,           1 << 5,    0,          0,           0,        -1 },
+	{ "mpv",           NULL,     NULL,           1 << 6,    0,          0,           0,        -1 },
+	{ "Brave-browser", NULL,     NULL,           1 << 8,    0,          0,           0,        -1 },
+	{ "firefox",       NULL,     NULL,           1 << 8,    0,          0,           0,        -1 },
 	{ NULL,            NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
 };
 
