@@ -61,6 +61,7 @@ static const Rule rules[] = {
 	{ "RStudio",       NULL,     NULL,           1 << 2,    0,          0,           0,        -1 },
 	{ NULL,            NULL,     "Register",     1 << 2,    1,          0,           0,        -1 },
 	{ "Zotero",        NULL,     NULL,           1 << 3,    0,          0,           0,        -1 },
+	{ "calibre",       NULL,     NULL,           1 << 3,    0,          0,           0,        -1 },
 	{ NULL,   "libreoffice",     NULL,           1 << 3,    0,          0,           0,        -1 },
 	{ "zoom",          NULL,     NULL,           1 << 4,    0,          0,           0,        -1 },
 	{ "Microsoft Teams - Preview",NULL,NULL,     1 << 4,    0,          0,           0,        -1 },
