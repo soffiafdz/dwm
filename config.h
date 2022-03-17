@@ -73,6 +73,7 @@ static const Rule rules[] = {
 	{ "Rawtherapee",   NULL,     NULL,           1 << 5,    0,          0,           0,        -1 },
 	{ "Darktable",     NULL,     NULL,           1 << 5,    0,          0,           0,        -1 },
 	{ "mpv",           NULL,     NULL,           1 << 6,    0,          0,           0,        -1 },
+	{ "Cider",         NULL,     NULL,           1 << 7,    0,          0,           0,        -1 },
 	{ "Brave-browser", NULL,     NULL,           1 << 8,    0,          0,           0,        -1 },
 	{ "firefox",       NULL,     NULL,           1 << 8,    0,          0,           0,        -1 },
 	{ NULL,            NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
