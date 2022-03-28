@@ -61,6 +61,7 @@ static const Rule rules[] = {
 	{ "RStudio",       NULL,     NULL,           1 << 2,    0,          0,           0,        -1 },
 	{ NULL,            NULL,     "Register",     1 << 2,    1,          0,           0,        -1 },
 	{ "Zotero",        NULL,     NULL,           1 << 3,    0,          0,           0,        -1 },
+	{ "calibre",       NULL,     NULL,           1 << 3,    0,          0,           0,        -1 },
 	{ NULL,   "libreoffice",     NULL,           1 << 3,    0,          0,           0,        -1 },
 	{ "zoom",          NULL,     NULL,           1 << 4,    0,          0,           0,        -1 },
 	{ "Microsoft Teams - Preview",NULL,NULL,     1 << 4,    0,          0,           0,        -1 },
@@ -72,6 +73,7 @@ static const Rule rules[] = {
 	{ "Rawtherapee",   NULL,     NULL,           1 << 5,    0,          0,           0,        -1 },
 	{ "Darktable",     NULL,     NULL,           1 << 5,    0,          0,           0,        -1 },
 	{ "mpv",           NULL,     NULL,           1 << 6,    0,          0,           0,        -1 },
+	{ "Cider",         NULL,     NULL,           1 << 7,    0,          0,           0,        -1 },
 	{ "Brave-browser", NULL,     NULL,           1 << 8,    0,          0,           0,        -1 },
 	{ "firefox",       NULL,     NULL,           1 << 8,    0,          0,           0,        -1 },
 	{ NULL,            NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
