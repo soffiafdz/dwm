@@ -183,7 +183,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_equal,        spawn,          SHCMD("pamixer --unmute; refbar") },
 
 	{ MODKEY,                       XK_Return,       spawn,          {.v = termcmd } },
-	{ MODKEY|ShiftMask,             XK_Return,       spawn,          SHCMD("$TERMINAL -e tmux") },
+	{ MODKEY|ShiftMask,             XK_Return,       spawn,          SHCMD("$TERMINAL -e init_tmux") },
 /* 	{ MODKEY,                       XK_Escape,       spawn,          SHCMD("sudo -A zzz") }, */
 	{ MODKEY|ShiftMask,             XK_Escape,       spawn,          SHCMD("prompt 'ShutDown?' 'sudo shutdown -h now'") },
 	{ MODKEY,                       XK_BackSpace,    spawn,          SHCMD("sysaction") },
