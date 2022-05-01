@@ -218,7 +218,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_p,            spawn,          SHCMD("fullscreenshot") },
 
 	{ MODKEY,                       XK_a,            spawn,          SHCMD("$TERMINAL -e pulsemixer") },
-	{ MODKEY|ShiftMask,             XK_a,            spawn,          SHCMD("spotify") },
+	{ MODKEY|ShiftMask,             XK_a,            spawn,          SHCMD("cider") },
 /*  For Tango; Broken Keyboard */
 /* 	{ MODKEY|ShiftMask,             XK_a,            spawn,          SHCMD("kill_keyboard") }, */
 	{ MODKEY,                       XK_s,            togglegaps,     {0} },
