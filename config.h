@@ -14,8 +14,8 @@ static int topbar             = 1;   /* 0 means bottom bar */
 static int focusonwheel       = 1;
 static int user_bh            = 0;   /* 0 means that dwm will calculate bar height, >= 1 means dwm will user_bh as bar height */
 
-static char font[]                      = "FiraCode Nerd Font:style=Retina,Regular:size=14:antialias=true";
-static const char *fonts[]              = { font, "JoyPixels:pixelsize=13:antialias=true:autohint=true" };
+static char font[]                      = "FiraCode Nerd Font:style=Regular:size=14:antialias=true";
+static const char *fonts[]              = { font, "JoyPixels:pixelsize=14:antialias=true:autohint=true" };
 static char normbgcolor[]               = "#222222";
 static char normbordercolor[]           = "#444444";
 static char normfgcolor[]               = "#bbbbbb";
@@ -46,7 +46,7 @@ static const char *const autostart[]    = {
 };
 
 /* tagging */
-static const char *tags[]       = { "", "", "ﬧ", "﫦", "", "", "ﳲ", "", "爵" };
+static const char *tags[]       = { "", "", "󰿉", "﫦", "", "", "󰑈", "", "󰖟" };
 static const char *tagsalt[]    = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
 static const Rule rules[] = {
