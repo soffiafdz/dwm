@@ -56,6 +56,7 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class           instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
+<<<<<<< HEAD
 	{ "kitty",         NULL,     NULL,           0,         0,          1,           0,        -1 },
 	{ "kitty",         NULL,     "tmux",         1,         0,          1,           0,        -1 },
 	{ "kitty",         NULL,     "Yazi ~",       1 << 1,    0,          1,           0,        -1 },
