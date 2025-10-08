@@ -31,14 +31,15 @@ static char *colors[][3]                = {
 };
 static const unsigned int alphas[][3]   = {
 	/*               fg      bg        border     */
-	[SchemeNorm] = { OPAQUE, baralpha, borderalpha },
-	[SchemeSel]  = { OPAQUE, baralpha, borderalpha },
+	[SchemeNorm] = { 0xffU,  0xd0,     0xffU },
+	[SchemeSel]  = { 0xffU,  0xd0,     0xffU },
 };
 
 static const char *const autostart[]    = {
 	"setwp", NULL,
-	"xcompmgr", NULL,
-	"dunst", NULL,
+  "compton", NULL,
+	// "xcompmgr", NULL,
+	// "dunst", NULL,
 	"unclutter", NULL,
 	"redshift", NULL,
 	"dwmbar", NULL,
@@ -55,9 +56,9 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class           instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
-	{ "St",            NULL,     NULL,           0,         0,          1,           0,        -1 },
-	{ "St",            NULL,     "tmux",         1,         0,          1,           0,        -1 },
-	{ "St",            NULL,     "lf",           1 << 1,    0,          1,           0,        -1 },
+	{ "kitty",         NULL,     NULL,           0,         0,          1,           0,        -1 },
+	{ "kitty",         NULL,     "tmux",         1,         0,          1,           0,        -1 },
+	{ "kitty",         NULL,     "Yazi ~",       1 << 1,    0,          1,           0,        -1 },
 	{ "RStudio",       NULL,     NULL,           1 << 2,    0,          0,           0,        -1 },
 	{ NULL,            NULL,     "Register",     1 << 2,    1,          0,           0,        -1 },
 	{ "notion-app-enhanced",NULL,NULL,           1 << 3,    0,          0,           0,        -1 },
@@ -134,7 +135,7 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { "kitty", NULL };
 
 /*
  * Xresources preferences to load at startup
@@ -180,12 +181,12 @@ static Key keys[] = {
 	TAGKEYS(                        XK_9,                            8)
 	{ MODKEY,                       XK_0,            view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,            tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_minus,        spawn,          SHCMD("pamixer --allow-boost -d 5; refbar") },
-	{ MODKEY|ShiftMask,             XK_minus,        spawn,          SHCMD("pamixer --allow-boost -i 5; refbar") },
-	{ MODKEY,                       XK_equal,        spawn,          SHCMD("pamixer --mute; refbar") },
-	{ MODKEY|ShiftMask,             XK_equal,        spawn,          SHCMD("pamixer --unmute; refbar") },
+	// { MODKEY,                       XK_minus,        spawn,          SHCMD("pamixer --allow-boost -d 5; refbar") },
+	// { MODKEY|ShiftMask,             XK_minus,        spawn,          SHCMD("pamixer --allow-boost -i 5; refbar") },
+	// { MODKEY,                       XK_equal,        spawn,          SHCMD("pamixer --mute; refbar") },
+	// { MODKEY|ShiftMask,             XK_equal,        spawn,          SHCMD("pamixer --unmute; refbar") },
 
-	{ MODKEY,                       XK_Return,       spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_Return,       spawn,          SHCMD("$TERMINAL -e zsh") },
 	{ MODKEY|ShiftMask,             XK_Return,       spawn,          SHCMD("$TERMINAL -e init_tmux") },
 /* 	{ MODKEY,                       XK_Escape,       spawn,          SHCMD("sudo -A zzz") }, */
 	{ MODKEY|ShiftMask,             XK_Escape,       spawn,          SHCMD("prompt 'ShutDown?' 'sudo shutdown -h now'") },
@@ -199,10 +200,10 @@ static Key keys[] = {
 	{ MODKEY,                       XK_q,            killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_q,            spawn,          SHCMD("kill -9 $(xdotool getwindowfocus getwindowpid)") },
 	{ MODKEY,                       XK_w,            spawn,          SHCMD("$BROWSER") },
-	{ MODKEY|ShiftMask,             XK_w,            spawn,          SHCMD("$TERMINAL -e sudo nmtui") },
+	{ MODKEY|ShiftMask,             XK_w,            spawn,          SHCMD("$TERMINAL -e nmtui") },
 	{ MODKEY,                       XK_e,            spawn,          SHCMD("$TERMINAL -e nvim") },
 	{ MODKEY|ShiftMask,             XK_e,            spawn,          SHCMD("$TERMINAL -e nvim -c VimwikiIndex") },
-	{ MODKEY,                       XK_r,            spawn,          SHCMD("$TERMINAL -e lfrun") },
+	{ MODKEY,                       XK_r,            spawn,          SHCMD("$TERMINAL -e yazi") },
 	{ MODKEY|ShiftMask,             XK_r,            spawn,          SHCMD("$TERMINAL -e bpytop") },
 	{ MODKEY,                       XK_t,            setlayout,      {.v = &layouts[0]} }, /* Tile */
 	{ MODKEY|ShiftMask,             XK_t,            setlayout,      {.v = &layouts[1]} }, /* Bstack */
@@ -258,16 +259,16 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period,       focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_period,       tagmon,         {.i = +1 } },
 
-	{ 0, XF86XK_AudioMute,          spawn,  SHCMD("pamixer -t; refbar") },
-	{ 0, XF86XK_AudioRaiseVolume,   spawn,  SHCMD("pamixer --allow-boost -i 3; refbar") },
-	{ 0, XF86XK_AudioLowerVolume,   spawn,  SHCMD("pamixer --allow-boost -d 3; refbar") },
-	{ 0, XF86XK_AudioPrev,          spawn,  SHCMD("playerctl previous") },
-	{ 0, XF86XK_AudioNext,          spawn,  SHCMD("playerctl next") },
-	{ 0, XF86XK_AudioPause,         spawn,  SHCMD("playerctl pause") },
-	{ 0, XF86XK_AudioPlay,          spawn,  SHCMD("playerctl play") },
-	{ 0, XF86XK_AudioStop,          spawn,  SHCMD("playerctl stop") },
-	{ 0, XF86XK_AudioRewind,        spawn,  SHCMD("playerctl position OFFSET -10") },
-	{ 0, XF86XK_AudioForward,       spawn,  SHCMD("playerctl position OFFSET +10") },
+	// { 0, XF86XK_AudioMute,          spawn,  SHCMD("pamixer -t; refbar") },
+	// { 0, XF86XK_AudioRaiseVolume,   spawn,  SHCMD("pamixer --allow-boost -i 3; refbar") },
+	// { 0, XF86XK_AudioLowerVolume,   spawn,  SHCMD("pamixer --allow-boost -d 3; refbar") },
+	// { 0, XF86XK_AudioPrev,          spawn,  SHCMD("playerctl previous") },
+	// { 0, XF86XK_AudioNext,          spawn,  SHCMD("playerctl next") },
+	// { 0, XF86XK_AudioPause,         spawn,  SHCMD("playerctl pause") },
+	// { 0, XF86XK_AudioPlay,          spawn,  SHCMD("playerctl play") },
+	// { 0, XF86XK_AudioStop,          spawn,  SHCMD("playerctl stop") },
+	// { 0, XF86XK_AudioRewind,        spawn,  SHCMD("playerctl position OFFSET -10") },
+	// { 0, XF86XK_AudioForward,       spawn,  SHCMD("playerctl position OFFSET +10") },
 };
 
 /* button definitions */
