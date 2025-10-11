@@ -55,9 +55,9 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class           instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
-	{ "St",            NULL,     NULL,           0,         0,          1,           0,        -1 },
-	{ "St",            NULL,     "tmux",         1,         0,          1,           0,        -1 },
-	{ "St",            NULL,     "yazi",           1 << 1,    0,          1,           0,        -1 },
+	{ "kitty",         NULL,     NULL,           0,         0,          1,           0,        -1 },
+	{ "kitty",         NULL,     "tmux",         1,         0,          1,           0,        -1 },
+	{ "kitty",         NULL,     "Yazi: ~/",     1 << 1,    0,          1,           0,        -1 },
 	{ "RStudio",       NULL,     NULL,           1 << 2,    0,          0,           0,        -1 },
 	{ NULL,            NULL,     "Register",     1 << 2,    1,          0,           0,        -1 },
 	{ "notion-app-enhanced",NULL,NULL,           1 << 3,    0,          0,           0,        -1 },
@@ -134,7 +134,7 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { "kitty", NULL };
 
 /*
  * Xresources preferences to load at startup
