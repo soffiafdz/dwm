@@ -57,7 +57,7 @@ static const Rule rules[] = {
 	/* class           instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
 	{ "St",            NULL,     NULL,           0,         0,          1,           0,        -1 },
 	{ "St",            NULL,     "tmux",         1,         0,          1,           0,        -1 },
-	{ "St",            NULL,     "lf",           1 << 1,    0,          1,           0,        -1 },
+	{ "St",            NULL,     "yazi",           1 << 1,    0,          1,           0,        -1 },
 	{ "RStudio",       NULL,     NULL,           1 << 2,    0,          0,           0,        -1 },
 	{ NULL,            NULL,     "Register",     1 << 2,    1,          0,           0,        -1 },
 	{ "notion-app-enhanced",NULL,NULL,           1 << 3,    0,          0,           0,        -1 },
@@ -202,7 +202,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_w,            spawn,          SHCMD("$TERMINAL -e sudo nmtui") },
 	{ MODKEY,                       XK_e,            spawn,          SHCMD("$TERMINAL -e nvim") },
 	{ MODKEY|ShiftMask,             XK_e,            spawn,          SHCMD("$TERMINAL -e nvim -c VimwikiIndex") },
-	{ MODKEY,                       XK_r,            spawn,          SHCMD("$TERMINAL -e lfrun") },
+	{ MODKEY,                       XK_r,            spawn,          SHCMD("$TERMINAL -e yazi") },
 	{ MODKEY|ShiftMask,             XK_r,            spawn,          SHCMD("$TERMINAL -e bpytop") },
 	{ MODKEY,                       XK_t,            setlayout,      {.v = &layouts[0]} }, /* Tile */
 	{ MODKEY|ShiftMask,             XK_t,            setlayout,      {.v = &layouts[1]} }, /* Bstack */
