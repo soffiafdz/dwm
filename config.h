@@ -249,8 +249,8 @@ static Keychord *keychords[] = {
 	/* Shift+O is FREE */
 	/* P is for monitor prev (see below) */
 
-	&((Keychord){1, {{MODKEY, XK_a}}, spawn, SHCMD("$TERMINAL -e pulsemixer")}),
-	/* Shift+A is FREE */
+	/* A is FREE - Aerospace uses for accordion layout */
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_a}}, spawn, SHCMD("$TERMINAL -e pulsemixer")}),
 	&((Keychord){1, {{MODKEY, XK_s}}, spawn, SHCMD("flameshot gui")}),
 	&((Keychord){1, {{MODKEY|ShiftMask, XK_s}}, spawn, SHCMD("flameshot full -p ~/Pictures/screenshots")}),
 	&((Keychord){1, {{MODKEY, XK_d}}, spawn, {.v = dmenucmd}}),
@@ -278,9 +278,9 @@ static Keychord *keychords[] = {
 	&((Keychord){1, {{MODKEY|ShiftMask, XK_b}}, togglebar, {0}}),
 	/* N/P for monitors */
 	&((Keychord){1, {{MODKEY, XK_n}}, focusmon, {.i = +1}}),
-	&((Keychord){1, {{MODKEY|ShiftMask, XK_n}}, tagmon, {.i = +1}}),
+	/* Shift+N is FREE - use move mode N instead */
 	&((Keychord){1, {{MODKEY, XK_p}}, focusmon, {.i = -1}}),
-	&((Keychord){1, {{MODKEY|ShiftMask, XK_p}}, tagmon, {.i = -1}}),
+	/* Shift+P is FREE - use move mode P instead */
 	/* ,/. are FREE */
 
 	&((Keychord){1, {{0, XF86XK_AudioMute}}, spawn, SHCMD("pamixer -t; refbar")}),
