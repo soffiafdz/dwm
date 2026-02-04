@@ -58,11 +58,11 @@ static const Rule rules[] = {
 	{ "kitty",         NULL,     NULL,           0,         0,          1,           0,        -1 },
 	{ "kitty",         NULL,     "tmux",         1,         0,          1,           0,        -1 },
 	{ "kitty",         NULL,     "Yazi: ~/",     1 << 1,    0,          1,           0,        -1 },
-	{ "RStudio",       NULL,     NULL,           1 << 2,    0,          0,           0,        -1 },
-	{ NULL,            NULL,     "Register",     1 << 2,    1,          0,           0,        -1 },
-	{ "notion-app-enhanced",NULL,NULL,           1 << 3,    0,          0,           0,        -1 },
+	{ "Todoist",       NULL,     NULL,           1 << 2,    0,          0,           0,        -1 },
+	{ "thunderbird",   NULL,     NULL,           1 << 2,    0,          0,           0,        -1 },
 	{ "Zotero",        NULL,     NULL,           1 << 3,    0,          0,           0,        -1 },
 	{ "calibre",       NULL,     NULL,           1 << 3,    0,          0,           0,        -1 },
+	{ "sioyek",        NULL,     NULL,           1 << 3,    0,          0,           0,        -1 },
 	{ NULL,   "libreoffice",     NULL,           1 << 3,    0,          0,           0,        -1 },
 	{ "zoom",          NULL,     NULL,           1 << 4,    0,          0,           0,        -1 },
 	{ "Microsoft Teams - Preview",NULL,NULL,     1 << 4,    0,          0,           0,        -1 },
@@ -70,12 +70,14 @@ static const Rule rules[] = {
 	{ "TelegramDesktop",NULL,    NULL,           1 << 4,    0,          0,           0,        -1 },
 	{ "Signal",        NULL,     NULL,           1 << 4,    0,          0,           0,        -1 },
 	{ "discord",       NULL,     "Discord",      1 << 4,    0,          0,           0,        -1 },
+	{ "Ferdium",       NULL,     NULL,           1 << 4,    0,          0,           0,        -1 },
 	{ "Gimp",          NULL,     NULL,           1 << 5,    1,          0,           0,        -1 },
 	{ "Rawtherapee",   NULL,     NULL,           1 << 5,    0,          0,           0,        -1 },
-	{ "Darktable",     NULL,     NULL,           1 << 5,    0,          0,           0,        -1 },
+	{ "ART",           NULL,     NULL,           1 << 5,    0,          0,           0,        -1 },
+	{ "digikam",       NULL,     NULL,           1 << 5,    0,          0,           0,        -1 },
 	{ "mpv",           NULL,     NULL,           1 << 6,    0,          0,           0,        -1 },
-	{ "Cider",         NULL,     NULL,           1 << 7,    0,          0,           0,        -1 },
-	{ "Brave-browser", NULL,     NULL,           1 << 8,    0,          0,           0,        -1 },
+	{ "Jellyfin Media Player",NULL,NULL,        1 << 6,    0,          0,           0,        -1 },
+	{ "Feishin",       NULL,     NULL,           1 << 7,    0,          0,           0,        -1 },
 	{ "firefox",       NULL,     NULL,           1 << 8,    0,          0,           0,        -1 },
 	{ NULL,            NULL,     "Event Tester", 0,         0,          0,           1,        -1 }, /* xev */
 };
@@ -115,18 +117,20 @@ static const Layout layouts[] = {
 /* key definitions */
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
-	{ MODKEY,                       KEY,  view,         {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask,           KEY,  toggleview,   {.ui = 1 << TAG} }, \
-	{ MODKEY|ShiftMask,             KEY,  tag,          {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask|ShiftMask, KEY,  toggletag,    {.ui = 1 << TAG} },
+	&((Keychord){1, {{MODKEY, KEY}}, view, {.ui = 1 << TAG}}), \
+	&((Keychord){1, {{MODKEY|ControlMask, KEY}}, toggleview, {.ui = 1 << TAG}}), \
+	&((Keychord){1, {{MODKEY|ShiftMask, KEY}}, tag, {.ui = 1 << TAG}}), \
+	&((Keychord){1, {{MODKEY|ControlMask|ShiftMask, KEY}}, toggletag, {.ui = 1 << TAG}}),
 #define STACKKEYS(MOD,ACTION) \
-	{ MOD, XK_j,     ACTION##stack, {.i = INC(+1) } }, \
-	{ MOD, XK_k,     ACTION##stack, {.i = INC(-1) } }, \
-	{ MOD, XK_v,     ACTION##stack, {.i = 0 } }, \
-	/* { MOD, XK_grave, ACTION##stack, {.i = PREVSEL } }, \ */
-	/* { MOD, XK_a,     ACTION##stack, {.i = 1 } }, \       */
-	/* { MOD, XK_z,     ACTION##stack, {.i = 2 } }, \       */
-	/* { MOD, XK_x,     ACTION##stack, {.i = -1 } },        */
+	&((Keychord){1, {{MOD, XK_j}}, ACTION##stack, {.i = INC(+1)}}), \
+	&((Keychord){1, {{MOD, XK_k}}, ACTION##stack, {.i = INC(-1)}}), \
+	&((Keychord){1, {{MOD, XK_v}}, ACTION##stack, {.i = 0}}),
+/* Move mode: Super+M, then number to send window to tag */
+#define MOVEKEYS(KEY,TAG) \
+	&((Keychord){2, {{MODKEY, XK_m}, {0, KEY}}, tag, {.ui = 1 << TAG}}),
+/* Toggleview mode: Super+C, then number to toggle viewing that tag */
+#define TOGGLEVIEWKEYS(KEY,TAG) \
+	&((Keychord){2, {{MODKEY, XK_c}, {0, KEY}}, toggleview, {.ui = 1 << TAG}}),
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
@@ -165,7 +169,7 @@ ResourcePref resources[] = {
 
 #include "shiftview.c"
 #include <X11/XF86keysym.h>
-static Key keys[] = {
+static Keychord *keychords[] = {
 	/* modifier                     key              function        argument */
 	STACKKEYS(MODKEY,                                focus)
 	STACKKEYS(MODKEY|ShiftMask,                      push)
@@ -178,96 +182,117 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                            6)
 	TAGKEYS(                        XK_8,                            7)
 	TAGKEYS(                        XK_9,                            8)
-	{ MODKEY,                       XK_0,            view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,            tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_minus,        spawn,          SHCMD("pamixer --allow-boost -d 5; refbar") },
-	{ MODKEY|ShiftMask,             XK_minus,        spawn,          SHCMD("pamixer --allow-boost -i 5; refbar") },
-	{ MODKEY,                       XK_equal,        spawn,          SHCMD("pamixer --mute; refbar") },
-	{ MODKEY|ShiftMask,             XK_equal,        spawn,          SHCMD("pamixer --unmute; refbar") },
+	/* Move mode: Super+M, then 1-9 to send window to tag */
+	MOVEKEYS(                       XK_1,                            0)
+	MOVEKEYS(                       XK_2,                            1)
+	MOVEKEYS(                       XK_3,                            2)
+	MOVEKEYS(                       XK_4,                            3)
+	MOVEKEYS(                       XK_5,                            4)
+	MOVEKEYS(                       XK_6,                            5)
+	MOVEKEYS(                       XK_7,                            6)
+	MOVEKEYS(                       XK_8,                            7)
+	MOVEKEYS(                       XK_9,                            8)
+	/* Move mode: Super+M, then G/; to send window to prev/next tag */
+	&((Keychord){2, {{MODKEY, XK_m}, {0, XK_g}}, shifttag, {.i = -1}}),
+	&((Keychord){2, {{MODKEY, XK_m}, {0, XK_semicolon}}, shifttag, {.i = +1}}),
+	/* Move mode: Super+M, then N/P to send window to monitor */
+	&((Keychord){2, {{MODKEY, XK_m}, {0, XK_n}}, tagmon, {.i = +1}}),
+	&((Keychord){2, {{MODKEY, XK_m}, {0, XK_p}}, tagmon, {.i = -1}}),
+	/* Move mode: Super+M, then M/U for mount/unmount drives */
+	&((Keychord){2, {{MODKEY, XK_m}, {0, XK_m}}, spawn, SHCMD("dmenumount")}),
+	&((Keychord){2, {{MODKEY, XK_m}, {0, XK_u}}, spawn, SHCMD("dmenuumount")}),
+	/* Toggleview mode: Super+C, then 1-9 to toggle viewing that tag */
+	TOGGLEVIEWKEYS(                 XK_1,                            0)
+	TOGGLEVIEWKEYS(                 XK_2,                            1)
+	TOGGLEVIEWKEYS(                 XK_3,                            2)
+	TOGGLEVIEWKEYS(                 XK_4,                            3)
+	TOGGLEVIEWKEYS(                 XK_5,                            4)
+	TOGGLEVIEWKEYS(                 XK_6,                            5)
+	TOGGLEVIEWKEYS(                 XK_7,                            6)
+	TOGGLEVIEWKEYS(                 XK_8,                            7)
+	TOGGLEVIEWKEYS(                 XK_9,                            8)
+	&((Keychord){1, {{MODKEY, XK_0}}, view, {.ui = ~0}}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_0}}, tag, {.ui = ~0}}),
+	&((Keychord){1, {{MODKEY, XK_minus}}, spawn, SHCMD("pamixer --allow-boost -d 5; refbar")}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_minus}}, spawn, SHCMD("pamixer --allow-boost -i 5; refbar")}),
+	&((Keychord){1, {{MODKEY, XK_equal}}, spawn, SHCMD("pamixer -t; refbar")}),
+	/* Shift+= is FREE */
 
-	{ MODKEY,                       XK_Return,       spawn,          {.v = termcmd } },
-	{ MODKEY|ShiftMask,             XK_Return,       spawn,          SHCMD("$TERMINAL -e init_tmux") },
-/* 	{ MODKEY,                       XK_Escape,       spawn,          SHCMD("sudo -A zzz") }, */
-	{ MODKEY|ShiftMask,             XK_Escape,       spawn,          SHCMD("prompt 'ShutDown?' 'sudo shutdown -h now'") },
-	{ MODKEY,                       XK_BackSpace,    spawn,          SHCMD("sysaction") },
-	{ MODKEY|ShiftMask,             XK_BackSpace,    quit,           SHCMD("sysaction") },
-	{ MODKEY,                       XK_Tab,          view,           {0} },
-	{ MODKEY|ShiftMask,             XK_Tab,          view,           {0} },
-	{ MODKEY,                       XK_space,        zoom,           {0} },
-	{ MODKEY|ShiftMask,             XK_space,        togglefloating, {0} },
+	&((Keychord){1, {{MODKEY, XK_Return}}, spawn, {.v = termcmd}}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_Return}}, spawn, SHCMD("$TERMINAL -e init_tmux")}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_Escape}}, spawn, SHCMD("prompt 'ShutDown?' 'sudo shutdown -h now'")}),
+	&((Keychord){1, {{MODKEY, XK_BackSpace}}, spawn, SHCMD("sysaction")}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_BackSpace}}, quit, SHCMD("sysaction")}),
+	&((Keychord){1, {{MODKEY, XK_Tab}}, view, {0}}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_Tab}}, view, {0}}),
+	&((Keychord){1, {{MODKEY, XK_space}}, zoom, {0}}),
+	/* Shift+Space is FREE */
+	&((Keychord){1, {{MODKEY, XK_o}}, togglefloating, {0}}),
 
-	{ MODKEY,                       XK_q,            killclient,     {0} },
-	{ MODKEY|ShiftMask,             XK_q,            spawn,          SHCMD("kill -9 $(xdotool getwindowfocus getwindowpid)") },
-	{ MODKEY,                       XK_w,            spawn,          SHCMD("$BROWSER") },
-	{ MODKEY|ShiftMask,             XK_w,            spawn,          SHCMD("$TERMINAL -e sudo nmtui") },
-	{ MODKEY,                       XK_e,            spawn,          SHCMD("$TERMINAL -e nvim") },
-	{ MODKEY|ShiftMask,             XK_e,            spawn,          SHCMD("$TERMINAL -e nvim -c VimwikiIndex") },
-	{ MODKEY,                       XK_r,            spawn,          SHCMD("$TERMINAL -e yazi") },
-	{ MODKEY|ShiftMask,             XK_r,            spawn,          SHCMD("$TERMINAL -e bpytop") },
-	{ MODKEY,                       XK_t,            setlayout,      {.v = &layouts[0]} }, /* Tile */
-	{ MODKEY|ShiftMask,             XK_t,            setlayout,      {.v = &layouts[1]} }, /* Bstack */
-	{ MODKEY,                       XK_y,            setlayout,      {.v = &layouts[2]} }, /* Grid */
-	{ MODKEY|ShiftMask,             XK_y,            setlayout,      {.v = &layouts[3]} }, /* Nrowgrid */
-	{ MODKEY,                       XK_u,            setlayout,      {.v = &layouts[4]} }, /* Monocle */
-	{ MODKEY|ShiftMask,             XK_u,            setlayout,      {.v = &layouts[5]} }, /* Deck */
-	{ MODKEY,                       XK_i,            setlayout,      {.v = &layouts[6]} }, /* CenteredMaster */
-	{ MODKEY|ShiftMask,             XK_i,            setlayout,      {.v = &layouts[7]} }, /* CFloatingMaster */
-	{ MODKEY,                       XK_o,            incnmaster,     {.i = +1} },
-	{ MODKEY|ShiftMask,             XK_o,            incnmaster,     {.i = -1} },
-	{ MODKEY,                       XK_p,            spawn,          SHCMD("flameshot gui") },
-	{ MODKEY|ShiftMask,             XK_p,            spawn,          SHCMD("fullscreenshot") },
+	&((Keychord){1, {{MODKEY, XK_q}}, killclient, {0}}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_q}}, spawn, SHCMD("kill -9 $(xdotool getwindowfocus getwindowpid)")}),
+	&((Keychord){1, {{MODKEY, XK_w}}, spawn, SHCMD("$BROWSER")}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_w}}, spawn, SHCMD("$TERMINAL -e sudo nmtui")}),
+	&((Keychord){1, {{MODKEY, XK_e}}, spawn, SHCMD("$TERMINAL -e nvim")}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_e}}, spawn, SHCMD("$TERMINAL -e nvim -c VimwikiIndex")}),
+	&((Keychord){1, {{MODKEY, XK_r}}, spawn, SHCMD("$TERMINAL -e yazi")}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_r}}, spawn, SHCMD("$TERMINAL -e btm")}),
+	&((Keychord){1, {{MODKEY, XK_t}}, setlayout, {.v = &layouts[0]}}), /* Tile */
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_t}}, setlayout, {.v = &layouts[1]}}), /* Bstack */
+	&((Keychord){1, {{MODKEY, XK_y}}, setlayout, {.v = &layouts[4]}}), /* Monocle */
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_y}}, setlayout, {.v = &layouts[5]}}), /* Deck */
+	&((Keychord){1, {{MODKEY, XK_u}}, setlayout, {.v = &layouts[6]}}), /* CenteredMaster */
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_u}}, setlayout, {.v = &layouts[7]}}), /* CFloatingMaster */
+	&((Keychord){1, {{MODKEY, XK_i}}, incnmaster, {.i = +1}}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_i}}, incnmaster, {.i = -1}}),
+	/* O is float toggle (see above) */
+	/* Shift+O is FREE */
+	/* P is for monitor prev (see below) */
 
-	{ MODKEY,                       XK_a,            spawn,          SHCMD("$TERMINAL -e pulsemixer") },
-	{ MODKEY|ShiftMask,             XK_a,            spawn,          SHCMD("cider") },
-/*  For Tango; Broken Keyboard */
-/* 	{ MODKEY|ShiftMask,             XK_a,            spawn,          SHCMD("kill_keyboard") }, */
-	{ MODKEY,                       XK_s,            togglegaps,     {0} },
-	{ MODKEY|ShiftMask,             XK_s,            defaultgaps,    {0} },
-	{ MODKEY,                       XK_d,            spawn,          {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_d,            spawn,          SHCMD("dmenupass") },
-	{ MODKEY,                       XK_f,            togglefullscr,  {0} },
-	{ MODKEY|ShiftMask,             XK_f,            setlayout,      {.v = &layouts[8]} },
-	{ MODKEY,                       XK_g,            shiftview,      { .i = -1 } },
-	{ MODKEY|ShiftMask,             XK_g,            shifttag,       { .i = -1 } },
-	{ MODKEY,                       XK_h,            setmfact,       {.f = -0.05} },
-	{ MODKEY|ShiftMask,             XK_h,            setcfact,       {.f = +0.25} },
-                                /* J & K: STACKKEYS */
-	{ MODKEY,                       XK_l,            setmfact,       {.f = +0.05} },
-	{ MODKEY|ShiftMask,             XK_l,            setcfact,       {.f = -0.25} },
-	{ MODKEY,                       XK_semicolon,    shiftview,      { .i = 1 } },
-	{ MODKEY|ShiftMask,             XK_semicolon,    shifttag,       { .i = 1 } },
-	{ MODKEY,                       XK_apostrophe,   setcfact,       {.f = 0.00} },
-	{ MODKEY|ShiftMask,             XK_apostrophe,   spawn,          SHCMD("refbar") },
+	&((Keychord){1, {{MODKEY, XK_a}}, spawn, SHCMD("$TERMINAL -e pulsemixer")}),
+	/* Shift+A is FREE */
+	&((Keychord){1, {{MODKEY, XK_s}}, spawn, SHCMD("flameshot gui")}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_s}}, spawn, SHCMD("flameshot full -p ~/Pictures/screenshots")}),
+	&((Keychord){1, {{MODKEY, XK_d}}, spawn, {.v = dmenucmd}}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_d}}, spawn, SHCMD("dmenupass")}),
+	&((Keychord){1, {{MODKEY, XK_f}}, togglefullscr, {0}}),
+	/* Shift+F is FREE */
+	&((Keychord){1, {{MODKEY, XK_g}}, shiftview, {.i = -1}}),
+	/* Shift+G is FREE - use move mode G instead */
+	&((Keychord){1, {{MODKEY, XK_h}}, setmfact, {.f = -0.05}}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_h}}, setcfact, {.f = +0.25}}),
+	/* J & K: STACKKEYS */
+	&((Keychord){1, {{MODKEY, XK_l}}, setmfact, {.f = +0.05}}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_l}}, setcfact, {.f = -0.25}}),
+	&((Keychord){1, {{MODKEY, XK_semicolon}}, shiftview, {.i = 1}}),
+	/* Shift+; is FREE - use move mode ; instead */
+	&((Keychord){1, {{MODKEY, XK_apostrophe}}, setcfact, {.f = 0.00}}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_apostrophe}}, spawn, SHCMD("refbar")}),
 
-	{ MODKEY,                       XK_z,            incrigaps,      {.i = +2 } },
-	{ MODKEY|ShiftMask,             XK_z,            incrgaps,       {.i = +2 } },
-	{ MODKEY,                       XK_x,            incrigaps,      {.i = -2 } },
-	{ MODKEY|ShiftMask,             XK_x,            incrgaps,       {.i = -2 } },
-/*  For Tango; Disable touch/trackpads */
-/* 	{ MODKEY,                       XK_c,            spawn,          SHCMD("tpadToggle") }, */
-/* 	{ MODKEY|ShiftMask,             XK_c,            spawn,          SHCMD("tpointToggle") }, */
-/*                  V is TAGKEY                                                    */
-	{ MODKEY,                       XK_b,            togglealttag,   {0} },
-	{ MODKEY|ShiftMask,             XK_b,            togglebar,      {0} },
-/* 	{ MODKEY,                       XK_n,            spawn,          SHCMD("seldisplay") }, */
-/* 	{ MODKEY|ShiftMask,             XK_n,            spawn,          SHCMD("offScreen") }, */
-	{ MODKEY,                       XK_m,            spawn,          SHCMD("dmenumount") },
-	{ MODKEY|ShiftMask,             XK_m,            spawn,          SHCMD("dmenuumount") },
-	{ MODKEY,                       XK_comma,        focusmon,       {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_comma,        tagmon,         {.i = -1 } },
-	{ MODKEY,                       XK_period,       focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_period,       tagmon,         {.i = +1 } },
+	&((Keychord){1, {{MODKEY, XK_z}}, togglegaps, {0}}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_z}}, defaultgaps, {0}}),
+	&((Keychord){1, {{MODKEY, XK_x}}, spawn, SHCMD("clipmenu")}),
+	/* Shift+X is FREE */
+	/* V is STACKKEY (focus master) */
+	&((Keychord){1, {{MODKEY, XK_b}}, togglealttag, {0}}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_b}}, togglebar, {0}}),
+	/* N/P for monitors */
+	&((Keychord){1, {{MODKEY, XK_n}}, focusmon, {.i = +1}}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_n}}, tagmon, {.i = +1}}),
+	&((Keychord){1, {{MODKEY, XK_p}}, focusmon, {.i = -1}}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_p}}, tagmon, {.i = -1}}),
+	/* ,/. are FREE */
 
-	{ 0, XF86XK_AudioMute,          spawn,  SHCMD("pamixer -t; refbar") },
-	{ 0, XF86XK_AudioRaiseVolume,   spawn,  SHCMD("pamixer --allow-boost -i 3; refbar") },
-	{ 0, XF86XK_AudioLowerVolume,   spawn,  SHCMD("pamixer --allow-boost -d 3; refbar") },
-	{ 0, XF86XK_AudioPrev,          spawn,  SHCMD("playerctl previous") },
-	{ 0, XF86XK_AudioNext,          spawn,  SHCMD("playerctl next") },
-	{ 0, XF86XK_AudioPause,         spawn,  SHCMD("playerctl pause") },
-	{ 0, XF86XK_AudioPlay,          spawn,  SHCMD("playerctl play") },
-	{ 0, XF86XK_AudioStop,          spawn,  SHCMD("playerctl stop") },
-	{ 0, XF86XK_AudioRewind,        spawn,  SHCMD("playerctl position OFFSET -10") },
-	{ 0, XF86XK_AudioForward,       spawn,  SHCMD("playerctl position OFFSET +10") },
+	&((Keychord){1, {{0, XF86XK_AudioMute}}, spawn, SHCMD("pamixer -t; refbar")}),
+	&((Keychord){1, {{0, XF86XK_AudioRaiseVolume}}, spawn, SHCMD("pamixer --allow-boost -i 3; refbar")}),
+	&((Keychord){1, {{0, XF86XK_AudioLowerVolume}}, spawn, SHCMD("pamixer --allow-boost -d 3; refbar")}),
+	&((Keychord){1, {{0, XF86XK_AudioPrev}}, spawn, SHCMD("playerctl previous")}),
+	&((Keychord){1, {{0, XF86XK_AudioNext}}, spawn, SHCMD("playerctl next")}),
+	&((Keychord){1, {{0, XF86XK_AudioPause}}, spawn, SHCMD("playerctl pause")}),
+	&((Keychord){1, {{0, XF86XK_AudioPlay}}, spawn, SHCMD("playerctl play")}),
+	&((Keychord){1, {{0, XF86XK_AudioStop}}, spawn, SHCMD("playerctl stop")}),
+	&((Keychord){1, {{0, XF86XK_AudioRewind}}, spawn, SHCMD("playerctl position OFFSET -10")}),
+	&((Keychord){1, {{0, XF86XK_AudioForward}}, spawn, SHCMD("playerctl position OFFSET +10")}),
 };
 
 /* button definitions */
