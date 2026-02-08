@@ -42,6 +42,7 @@ static const char *const autostart[]    = {
 	"unclutter", NULL,
 	"redshift", NULL,
 	"dwmbar", NULL,
+	"clipmenud", NULL,
 	NULL
 };
 
