@@ -36,13 +36,13 @@ static const unsigned int alphas[][3]   = {
 };
 
 static const char *const autostart[]    = {
-	"setwp", NULL,
-	"xcompmgr", NULL,
-	"dunst", NULL,
-	"unclutter", NULL,
-	"redshift", NULL,
-	"dwmbar", NULL,
-	"clipmenud", NULL,
+	"sh", "-c", "pkill -x setwp; exec setwp", NULL,
+	"sh", "-c", "pkill -x picom; exec picom", NULL,
+	"sh", "-c", "pkill -x dunst; exec dunst", NULL,
+	"sh", "-c", "pkill -x unclutter; exec unclutter", NULL,
+	"sh", "-c", "pkill -x redshift; exec redshift", NULL,
+	"sh", "-c", "pkill -x dwmbar; exec dwmbar", NULL,
+	"sh", "-c", "pkill -x clipmenud; exec clipmenud", NULL,
 	NULL
 };
 
