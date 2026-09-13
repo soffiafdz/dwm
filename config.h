@@ -15,14 +15,15 @@ static int focusonwheel       = 1;
 static int user_bh            = 0;   /* 0 means that dwm will calculate bar height, >= 1 means dwm will user_bh as bar height */
 static const unsigned int chordtimeout = 1500; /* ms to wait for the next key of a chord before cancelling it */
 
-static char font[]                      = "FiraCode Nerd Font:style=Regular:size=14:antialias=true";
-static const char *fonts[]              = { font, "JoyPixels:pixelsize=14:antialias=true:autohint=true" };
-static char normbgcolor[]               = "#222222";
-static char normbordercolor[]           = "#444444";
-static char normfgcolor[]               = "#bbbbbb";
-static char selfgcolor[]                = "#eeeeee";
-static char selbordercolor[]            = "#420000";
-static char selbgcolor[]                = "#420000";
+#define STRSZ 256 /* capacity of the Xresources-overridable string arrays */
+static char font[STRSZ]            = "FiraCode Nerd Font:style=Regular:size=14:antialias=true";
+static const char *fonts[]         = { font, "JoyPixels:pixelsize=14:antialias=true:autohint=true" };
+static char normbgcolor[STRSZ]     = "#222222";
+static char normbordercolor[STRSZ] = "#444444";
+static char normfgcolor[STRSZ]     = "#bbbbbb";
+static char selfgcolor[STRSZ]      = "#eeeeee";
+static char selbordercolor[STRSZ]  = "#420000";
+static char selbgcolor[STRSZ]      = "#420000";
 static const unsigned int baralpha      = 0xd0;
 static const unsigned int borderalpha   = OPAQUE;
 static char *colors[][3]                = {

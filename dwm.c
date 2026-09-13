@@ -253,6 +253,7 @@ static void setup(void);
 static void seturgent(Client *c, int urg);
 static void showhide(Client *c);
 static void sigchld(int unused);
+static void sigterm(int unused);
 static void spawn(const Arg *arg);
 static int stackpos(const Arg *arg);
 static void tag(const Arg *arg);
@@ -364,7 +365,7 @@ autostart_exec() {
 	for (p = autostart; *p; autostart_len++, p++)
 		while (*++p);
 
-	autostart_pids = malloc(autostart_len * sizeof(pid_t));
+	autostart_pids = ecalloc(autostart_len, sizeof(pid_t));
 	for (p = autostart; *p; i++, p++) {
 		if ((autostart_pids[i] = fork()) == 0) {
 			setsid();
@@ -999,7 +1000,7 @@ focusstack(const Arg *arg)
 	int i = stackpos(arg);
 	Client *c, *p;
 
-	if (i < 0 || selmon->sel->isfullscreen)
+	if (i < 0 || !selmon->sel || selmon->sel->isfullscreen)
 		return;
 
 	for(p = NULL, c = selmon->clients; c && (i || !ISVISIBLE(c));
@@ -1465,7 +1466,7 @@ pushstack(const Arg *arg) {
 	int i = stackpos(arg);
 	Client *sel = selmon->sel, *c, *p;
 
-	if(i < 0)
+	if (i < 0 || !sel)
 		return;
 	else if(i == 0) {
 		detach(sel);
@@ -1487,13 +1488,32 @@ void
 quit(const Arg *arg)
 {
 	size_t i;
+	int n;
+	pid_t pid, ret;
 
-	/* kill child processes */
-	for (i = 0; i < autostart_len; i++) {
-		if (0 < autostart_pids[i]) {
+	/* ask child processes to terminate */
+	for (i = 0; i < autostart_len; i++)
+		if (0 < autostart_pids[i])
 			kill(autostart_pids[i], SIGTERM);
-			waitpid(autostart_pids[i], NULL, 0);
+
+	/* wait a bit for each, then force-kill stragglers */
+	for (i = 0; i < autostart_len; i++) {
+		pid = autostart_pids[i];
+		if (pid <= 0)
+			continue;
+		for (n = 0; n < 20; n++) {
+			ret = waitpid(pid, NULL, WNOHANG);
+			if (ret == pid || (ret < 0 && errno == ECHILD))
+				break;
+			if (ret < 0 && errno != EINTR)
+				break;
+			usleep(50000);
 		}
+		if (n == 20) {
+			kill(pid, SIGKILL);
+			waitpid(pid, NULL, 0);
+		}
+		autostart_pids[i] = 0;
 	}
 
 	running = 0;
@@ -1808,6 +1828,7 @@ setup(void)
 
 	/* clean up any zombies immediately */
 	sigchld(0);
+	signal(SIGTERM, sigterm);
 
 	/* init screen */
 	screen = DefaultScreen(dpy);
@@ -1924,6 +1945,12 @@ sigchld(int unused)
 		}
 
 	}
+}
+
+void
+sigterm(int unused)
+{
+	running = 0;
 }
 
 void
@@ -2690,7 +2717,7 @@ resource_load(XrmDatabase db, char *name, enum resource_type rtype, void *dst)
 	{
 		switch (rtype) {
 		case STRING:
-			strcpy(sdst, ret.addr);
+			snprintf(sdst, STRSZ, "%s", ret.addr);
 			break;
 		case INTEGER:
 			*idst = strtoul(ret.addr, NULL, 10);
@@ -2745,6 +2772,7 @@ main(int argc, char *argv[])
 #endif /* __OpenBSD__ */
 	scan();
 	run();
+	quit(NULL); /* also on SIGTERM: reap autostart children */
 	cleanup();
 	XCloseDisplay(dpy);
 	return EXIT_SUCCESS;

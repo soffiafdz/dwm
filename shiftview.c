@@ -3,6 +3,19 @@
  * @param: "arg->i" stores the number of tags to shift right (positive value)
  *          or left (negative value)
  */
+static unsigned int
+shifttags(unsigned int tagset, int shift)
+{
+	int n = LENGTH(tags);
+
+	shift %= n;
+	if (shift < 0)
+		shift += n;
+	if (!shift)
+		return tagset & TAGMASK;
+	return ((tagset << shift) | (tagset >> (n - shift))) & TAGMASK;
+}
+
 void
 shiftview(const Arg *arg)
 {
@@ -11,16 +24,12 @@ shiftview(const Arg *arg)
 	unsigned visible = 0;
 	int i = arg->i;
 	int count = 0;
-	int nextseltags, curseltags = selmon->tagset[selmon->seltags];
+	unsigned int nextseltags, curseltags = selmon->tagset[selmon->seltags];
 
 	do {
-		if(i > 0) // left circular shift
-			nextseltags = (curseltags << i) | (curseltags >> (LENGTH(tags) - i));
+		nextseltags = shifttags(curseltags, i);
 
-		else // right circular shift
-			nextseltags = curseltags >> (- i) | (curseltags << (LENGTH(tags) + i));
-
-                // Check if tag is visible
+		// Check if tag is visible
 		for (c = selmon->clients; c && !visible; c = c->next)
 			if (nextseltags & c->tags) {
 				visible = 1;
@@ -30,7 +39,7 @@ shiftview(const Arg *arg)
 	} while (!visible && ++count < 10);
 
 	if (count < 10) {
-		a.i = nextseltags;
+		a.ui = nextseltags;
 		view(&a);
 	}
 }
@@ -43,16 +52,12 @@ shifttag(const Arg *arg)
 	unsigned visible = 0;
 	int i = arg->i;
 	int count = 0;
-	int nextseltags, curseltags = selmon->tagset[selmon->seltags];
+	unsigned int nextseltags, curseltags = selmon->tagset[selmon->seltags];
 
 	do {
-		if(i > 0) // left circular shift
-			nextseltags = (curseltags << i) | (curseltags >> (LENGTH(tags) - i));
+		nextseltags = shifttags(curseltags, i);
 
-		else // right circular shift
-			nextseltags = curseltags >> (- i) | (curseltags << (LENGTH(tags) + i));
-
-                // Check if tag is visible
+		// Check if tag is visible
 		for (c = selmon->clients; c && !visible; c = c->next)
 			if (nextseltags & c->tags) {
 				visible = 1;
@@ -62,7 +67,7 @@ shifttag(const Arg *arg)
 	} while (!visible && ++count < 10);
 
 	if (count < 10) {
-		a.i = nextseltags;
+		a.ui = nextseltags;
 		tag(&a);
 	}
 }
