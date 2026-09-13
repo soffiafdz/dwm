@@ -44,7 +44,7 @@ static const char *const autostart[]    = {
 	"sh", "-c", "pkill -x unclutter; exec unclutter", NULL,
 	"sh", "-c", "pkill -x redshift; exec redshift", NULL,
 	"sh", "-c", "pkill -x dwmbar; exec dwmbar", NULL,
-	"sh", "-c", "pkill -x clipmenud; exec clipmenud", NULL,
+	"sh", "-c", "pkill -f '[/]clipmenud'; exec clipmenud", NULL,
 	NULL
 };
 
