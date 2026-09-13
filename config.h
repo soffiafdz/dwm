@@ -128,9 +128,6 @@ static const Layout layouts[] = {
 	&((Keychord){1, {{MOD, XK_j}}, ACTION##stack, {.i = INC(+1)}}), \
 	&((Keychord){1, {{MOD, XK_k}}, ACTION##stack, {.i = INC(-1)}}), \
 	&((Keychord){1, {{MOD, XK_v}}, ACTION##stack, {.i = 0}}),
-/* Move mode: Super+M, then number to send window to tag */
-#define MOVEKEYS(KEY,TAG) \
-	&((Keychord){2, {{MODKEY, XK_m}, {0, KEY}}, tag, {.ui = 1 << TAG}}),
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
@@ -181,25 +178,6 @@ static Keychord *keychords[] = {
 	TAGKEYS(                        XK_7,                            6)
 	TAGKEYS(                        XK_8,                            7)
 	TAGKEYS(                        XK_9,                            8)
-	/* Move mode: Super+M, then 1-9 to send window to tag */
-	MOVEKEYS(                       XK_1,                            0)
-	MOVEKEYS(                       XK_2,                            1)
-	MOVEKEYS(                       XK_3,                            2)
-	MOVEKEYS(                       XK_4,                            3)
-	MOVEKEYS(                       XK_5,                            4)
-	MOVEKEYS(                       XK_6,                            5)
-	MOVEKEYS(                       XK_7,                            6)
-	MOVEKEYS(                       XK_8,                            7)
-	MOVEKEYS(                       XK_9,                            8)
-	/* Move mode: Super+M, then G/; to send window to prev/next tag */
-	&((Keychord){2, {{MODKEY, XK_m}, {0, XK_g}}, shifttag, {.i = -1}}),
-	&((Keychord){2, {{MODKEY, XK_m}, {0, XK_semicolon}}, shifttag, {.i = +1}}),
-	/* Move mode: Super+M, then N/P to send window to monitor */
-	&((Keychord){2, {{MODKEY, XK_m}, {0, XK_n}}, tagmon, {.i = +1}}),
-	&((Keychord){2, {{MODKEY, XK_m}, {0, XK_p}}, tagmon, {.i = -1}}),
-	/* Move mode: Super+M, then M/U for mount/unmount drives */
-	&((Keychord){2, {{MODKEY, XK_m}, {0, XK_m}}, spawn, SHCMD("dmenumount")}),
-	&((Keychord){2, {{MODKEY, XK_m}, {0, XK_u}}, spawn, SHCMD("dmenuumount")}),
 	/* C is FREE - toggleview is Super+Ctrl+number */
 	&((Keychord){1, {{MODKEY, XK_0}}, view, {.ui = ~0}}),
 	&((Keychord){1, {{MODKEY|ShiftMask, XK_0}}, tag, {.ui = ~0}}),
@@ -210,17 +188,21 @@ static Keychord *keychords[] = {
 
 	&((Keychord){1, {{MODKEY, XK_Return}}, spawn, {.v = termcmd}}),
 	&((Keychord){1, {{MODKEY|ShiftMask, XK_Return}}, spawn, SHCMD("$TERMINAL -e init_tmux")}),
-	&((Keychord){1, {{MODKEY|ShiftMask, XK_Escape}}, spawn, SHCMD("prompt 'ShutDown?' 'sudo shutdown -h now'")}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_Escape}}, spawn, SHCMD("prompt 'ShutDown?' 'sudo -A shutdown -h now'")}),
 	&((Keychord){1, {{MODKEY, XK_BackSpace}}, spawn, SHCMD("sysaction")}),
-	&((Keychord){1, {{MODKEY|ShiftMask, XK_BackSpace}}, quit, SHCMD("sysaction")}),
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_BackSpace}}, spawn, SHCMD("sysaction")}),
 	&((Keychord){1, {{MODKEY, XK_Tab}}, view, {0}}),
-	&((Keychord){1, {{MODKEY|ShiftMask, XK_Tab}}, view, {0}}),
+	/* Shift+Tab is FREE */
 	&((Keychord){1, {{MODKEY, XK_space}}, zoom, {0}}),
-	/* Shift+Space is FREE */
+	/* dunst notifications (dunst 1.13 ignores its own [shortcuts] section) */
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_space}}, spawn, SHCMD("dunstctl close-all")}),
+	&((Keychord){1, {{MODKEY|ControlMask, XK_space}}, spawn, SHCMD("dunstctl history-pop")}),
+	&((Keychord){1, {{MODKEY|ControlMask|ShiftMask, XK_space}}, spawn, SHCMD("dunstctl context")}),
 	&((Keychord){1, {{MODKEY, XK_o}}, togglefloating, {0}}),
 
-	&((Keychord){1, {{MODKEY, XK_q}}, killclient, {0}}),
-	&((Keychord){1, {{MODKEY|ShiftMask, XK_q}}, spawn, SHCMD("kill -9 $(xdotool getwindowfocus getwindowpid)")}),
+	/* Q is FREE - close is Super+Shift+Q */
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_q}}, killclient, {0}}),
+	&((Keychord){1, {{MODKEY|ControlMask|ShiftMask, XK_q}}, spawn, SHCMD("pid=$(xdotool getwindowfocus getwindowpid) && prompt \"kill -9 $pid?\" \"kill -9 $pid\"")}),
 	&((Keychord){1, {{MODKEY, XK_w}}, spawn, SHCMD("$BROWSER")}),
 	&((Keychord){1, {{MODKEY|ShiftMask, XK_w}}, spawn, SHCMD("$TERMINAL -e sudo nmtui")}),
 	&((Keychord){1, {{MODKEY, XK_e}}, spawn, SHCMD("$TERMINAL -e nvim")}),
@@ -246,31 +228,32 @@ static Keychord *keychords[] = {
 	&((Keychord){1, {{MODKEY, XK_d}}, spawn, {.v = dmenucmd}}),
 	&((Keychord){1, {{MODKEY|ShiftMask, XK_d}}, spawn, SHCMD("dmenupass")}),
 	&((Keychord){1, {{MODKEY, XK_f}}, togglefullscr, {0}}),
-	/* Shift+F is FREE */
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_f}}, spawn, SHCMD("dmenuumount")}),
 	&((Keychord){1, {{MODKEY, XK_g}}, shiftview, {.i = -1}}),
-	/* Shift+G is FREE - use move mode G instead */
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_g}}, shifttag, {.i = -1}}),
 	&((Keychord){1, {{MODKEY, XK_h}}, setmfact, {.f = -0.05}}),
 	&((Keychord){1, {{MODKEY|ShiftMask, XK_h}}, setcfact, {.f = +0.25}}),
 	/* J & K: STACKKEYS */
 	&((Keychord){1, {{MODKEY, XK_l}}, setmfact, {.f = +0.05}}),
 	&((Keychord){1, {{MODKEY|ShiftMask, XK_l}}, setcfact, {.f = -0.25}}),
 	&((Keychord){1, {{MODKEY, XK_semicolon}}, shiftview, {.i = 1}}),
-	/* Shift+; is FREE - use move mode ; instead */
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_semicolon}}, shifttag, {.i = +1}}),
 	&((Keychord){1, {{MODKEY, XK_apostrophe}}, setcfact, {.f = 0.00}}),
 	&((Keychord){1, {{MODKEY|ShiftMask, XK_apostrophe}}, spawn, SHCMD("refbar")}),
 
 	&((Keychord){1, {{MODKEY, XK_z}}, togglegaps, {0}}),
 	&((Keychord){1, {{MODKEY|ShiftMask, XK_z}}, defaultgaps, {0}}),
 	&((Keychord){1, {{MODKEY, XK_x}}, spawn, SHCMD("clipmenu")}),
-	/* Shift+X is FREE */
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_x}}, spawn, SHCMD("dmenumount")}),
 	/* V is STACKKEY (focus master) */
 	&((Keychord){1, {{MODKEY, XK_b}}, togglealttag, {0}}),
 	&((Keychord){1, {{MODKEY|ShiftMask, XK_b}}, togglebar, {0}}),
 	/* N/P for monitors */
 	&((Keychord){1, {{MODKEY, XK_n}}, focusmon, {.i = +1}}),
-	/* Shift+N is FREE - use move mode N instead */
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_n}}, tagmon, {.i = +1}}),
 	&((Keychord){1, {{MODKEY, XK_p}}, focusmon, {.i = -1}}),
-	/* Shift+P is FREE - use move mode P instead */
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_p}}, tagmon, {.i = -1}}),
+	/* M is FREE */
 	/* ,/. are FREE */
 
 	&((Keychord){1, {{0, XF86XK_AudioMute}}, spawn, SHCMD("pamixer -t; refbar")}),
