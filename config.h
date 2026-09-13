@@ -13,6 +13,7 @@ static int showbar            = 1;   /* 0 means no bar */
 static int topbar             = 1;   /* 0 means bottom bar */
 static int focusonwheel       = 1;
 static int user_bh            = 0;   /* 0 means that dwm will calculate bar height, >= 1 means dwm will user_bh as bar height */
+static const unsigned int chordtimeout = 1500; /* ms to wait for the next key of a chord before cancelling it */
 
 static char font[]                      = "FiraCode Nerd Font:style=Regular:size=14:antialias=true";
 static const char *fonts[]              = { font, "JoyPixels:pixelsize=14:antialias=true:autohint=true" };
@@ -129,10 +130,6 @@ static const Layout layouts[] = {
 /* Move mode: Super+M, then number to send window to tag */
 #define MOVEKEYS(KEY,TAG) \
 	&((Keychord){2, {{MODKEY, XK_m}, {0, KEY}}, tag, {.ui = 1 << TAG}}),
-/* Toggleview mode: Super+C, then number to toggle viewing that tag */
-#define TOGGLEVIEWKEYS(KEY,TAG) \
-	&((Keychord){2, {{MODKEY, XK_c}, {0, KEY}}, toggleview, {.ui = 1 << TAG}}),
-
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
@@ -202,16 +199,7 @@ static Keychord *keychords[] = {
 	/* Move mode: Super+M, then M/U for mount/unmount drives */
 	&((Keychord){2, {{MODKEY, XK_m}, {0, XK_m}}, spawn, SHCMD("dmenumount")}),
 	&((Keychord){2, {{MODKEY, XK_m}, {0, XK_u}}, spawn, SHCMD("dmenuumount")}),
-	/* Toggleview mode: Super+C, then 1-9 to toggle viewing that tag */
-	TOGGLEVIEWKEYS(                 XK_1,                            0)
-	TOGGLEVIEWKEYS(                 XK_2,                            1)
-	TOGGLEVIEWKEYS(                 XK_3,                            2)
-	TOGGLEVIEWKEYS(                 XK_4,                            3)
-	TOGGLEVIEWKEYS(                 XK_5,                            4)
-	TOGGLEVIEWKEYS(                 XK_6,                            5)
-	TOGGLEVIEWKEYS(                 XK_7,                            6)
-	TOGGLEVIEWKEYS(                 XK_8,                            7)
-	TOGGLEVIEWKEYS(                 XK_9,                            8)
+	/* C is FREE - toggleview is Super+Ctrl+number */
 	&((Keychord){1, {{MODKEY, XK_0}}, view, {.ui = ~0}}),
 	&((Keychord){1, {{MODKEY|ShiftMask, XK_0}}, tag, {.ui = ~0}}),
 	&((Keychord){1, {{MODKEY, XK_minus}}, spawn, SHCMD("pamixer --allow-boost -d 5; refbar")}),

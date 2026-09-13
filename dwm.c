@@ -28,6 +28,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
+#include <sys/select.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <X11/cursorfont.h>
@@ -1135,6 +1137,46 @@ isuniquegeom(XineramaScreenInfo *unique, size_t n, XineramaScreenInfo *info)
 }
 #endif /* XINERAMA */
 
+/*
+ * Wait up to chordtimeout ms for the next KeyPress of a chord. Every other
+ * event is dispatched normally while waiting: dropping them would leave the
+ * WM stalled (e.g. a click on an unfocused window activates a synchronous
+ * button grab that freezes all input until buttonpress() releases it).
+ * Returns 1 with the KeyPress in ev, 0 on timeout.
+ */
+static int
+waitkey(XEvent *ev)
+{
+	int fd = ConnectionNumber(dpy);
+	fd_set fds;
+	struct timeval tv;
+	struct timespec start, now;
+	long elapsed, left;
+
+	clock_gettime(CLOCK_MONOTONIC, &start);
+	while (running) {
+		while (XPending(dpy)) {
+			XNextEvent(dpy, ev);
+			if (ev->type == KeyPress)
+				return 1;
+			if (ev->type < LASTEvent && handler[ev->type])
+				handler[ev->type](ev);
+		}
+		clock_gettime(CLOCK_MONOTONIC, &now);
+		elapsed = (now.tv_sec - start.tv_sec) * 1000
+		        + (now.tv_nsec - start.tv_nsec) / 1000000;
+		left = (long)chordtimeout - elapsed;
+		if (left <= 0)
+			return 0;
+		tv.tv_sec = left / 1000;
+		tv.tv_usec = (left % 1000) * 1000;
+		FD_ZERO(&fds);
+		FD_SET(fd, &fds);
+		select(fd + 1, &fds, NULL, NULL, &tv);
+	}
+	return 0;
+}
+
 void
 keypress(XEvent *e)
 {
@@ -1172,9 +1214,8 @@ keypress(XEvent *e)
 		if (w == 0 || ran == 1)
 			break;
 		grabkeys();
-		while (running && !XNextEvent(dpy, &event) && !ran)
-			if (event.type == KeyPress)
-				break;
+		if (!waitkey(&event))
+			break;
 		r = w;
 		Keychord **holder = rpointer;
 		rpointer = wpointer;
