@@ -2142,8 +2142,7 @@ unmapnotify(XEvent *e)
 	if ((c = wintoclient(ev->window))) {
 		if (ev->send_event)
 			setclientstate(c, WithdrawnState);
-		else
-			unmanage(c, 0);
+		unmanage(c, 0);
 	}
 }
 
