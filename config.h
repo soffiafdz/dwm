@@ -218,7 +218,7 @@ static Keychord *keychords[] = {
 	&((Keychord){1, {{MODKEY, XK_i}}, incnmaster, {.i = +1}}),
 	&((Keychord){1, {{MODKEY|ShiftMask, XK_i}}, incnmaster, {.i = -1}}),
 	/* O is float toggle (see above) */
-	/* Shift+O is FREE */
+	&((Keychord){1, {{MODKEY|ShiftMask, XK_o}}, spawn, SHCMD("tango-extend")}),
 	/* P is for monitor prev (see below) */
 
 	/* A is FREE - Aerospace uses for accordion layout */
